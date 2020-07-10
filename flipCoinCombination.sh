@@ -93,6 +93,27 @@ function Triplet() {
         coinTriplet=([HHH]=$HHHpercentage [HTH]=$HTHpercentage [THH]=$THHpercentage [TTH]=$TTHpercentage \
 	[HHT]=$HHTpercentage [THT]=$THTpercentage [HTT]=$HTTpercentage [TTT]=$TTTpercentage)
 }
+function DictionaryBuilder() {
+	for i in "${!coinDoublet[@]}"
+	do
+		coinSinglet[$i]=${coinDoublet[$i]}
+	done
+	for i in "${!coinTriplet[@]}"
+	do
+		coinSinglet[$i]=${coinTriplet[$i]}
+	done
+}
+function Sort() {
+        IFS=$'\n' Sorted=($(sort -nr <<<"${coinSinglet[*]}"))
+	unset IFS
+	for i in "${!coinSinglet[@]}"
+	do
+		[[ ${Sorted[0]} -ne ${coinSinglet[$i]} ]] && continue
+		echo "winnig combination is $i"; return;
+	done
+}
 Singlet
 Doublet
 Triplet
+DictionaryBuilder
+Sort
